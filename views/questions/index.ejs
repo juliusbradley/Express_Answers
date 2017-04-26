@@ -1,0 +1,10 @@
+<%- include('../partials/header') %>
+<h1> Questions </h1>
+<ul class = "questions-list">
+    <% for (let question of questions) { %>
+  <h2><a href = "/questions/<%= question.id %>">
+   <%= question.title %></a></h3>
+   <hr>
+    <% } %>
+  </ul>
+<%- include('../partials/footer') %>

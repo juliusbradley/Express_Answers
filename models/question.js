@@ -6,7 +6,12 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+        Question.hasMany(models.Answers);
+         //List of instance methods add to Question by .hasMany
+        // Question#getAnswers.
+        // Question#setAnswers
+        // Question#addAnswer
+        // Question#addAnswers
       }
     }
   });
