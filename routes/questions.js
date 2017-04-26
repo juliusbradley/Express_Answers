@@ -1,5 +1,10 @@
 const express = require('express');
+//the express.Router() method option takes object to configure it
+//the mergeParams option will combine the req.params from the parent
+//router with the actual router's req.params when set to true
 const router = express.Router();
+
+const answers = require('./answers');
 
 const Question = require('../models/index').Question;
 // ð NEW! Destructuring
@@ -54,8 +59,23 @@ router.get('/:id', function (req, res) {
   Question
     .findById(id)
     .then(function (question) {
-      res.render('questions/show', {question: question})
-    });
+      return Promise.all([
+        question,
+        question.getAnswers({order: [['createdAt', 'DESC']]})
+      ])
+      })
+      //NEW! Array destructuring
+      // const [first, second, ...rest] = [1, 2, 3, 4, 5, 6]
+      // first === 1; second === 2, rest === [3, 4, 5. 6]
+      // ð can also be done with function arguments ð
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+      .then(function([question, answers]) {
+      res.render('questions/show', {question: question, answers: answers})
+    })
 })
+
+//URL: /questions/:questionId/answers VERB: All of them!
+router.use('/:questionId/answers', answers);
+
 
 module.exports = router;
